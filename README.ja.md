@@ -46,6 +46,7 @@ Authentication-Results (mx.google.com)
 ### 確かめた環境
 
 - Ubuntu 24.04（Python 3.12.3）
+- Windows 11 の WSL（Ubuntu 26.04・Python 3.14.4）
 
 ## ライセンス
 
