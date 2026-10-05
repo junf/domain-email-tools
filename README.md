@@ -47,6 +47,7 @@ The topmost `Authentication-Results:` is the one written by the last server that
 
 - Ubuntu 24.04 (Python 3.12.3)
 - Windows 11, WSL with Ubuntu 26.04 (Python 3.14.4)
+- macOS 26.7.1 (Python 3.9.6 from Command Line Tools)
 
 ## License
 

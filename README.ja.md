@@ -47,6 +47,7 @@ Authentication-Results (mx.google.com)
 
 - Ubuntu 24.04（Python 3.12.3）
 - Windows 11 の WSL（Ubuntu 26.04・Python 3.14.4）
+- macOS 26.7.1（Command Line Tools の Python 3.9.6）
 
 ## ライセンス
 
