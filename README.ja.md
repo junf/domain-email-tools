@@ -49,6 +49,49 @@ Authentication-Results (mx.google.com)
 - Windows 11 の WSL（Ubuntu 26.04・Python 3.14.4）
 - macOS 26.7.1（Command Line Tools の Python 3.9.6）
 
+## spf-count.py — SPF が DNS を引く回数を数える
+
+SPF の評価で DNS を引けるのは10回までです（RFC 7208 4.6.4）。`include:` は取り込んだ先で引いた回数も合算されるので、3つでも超えることがあります。このスクリプトは `include:` と `redirect=` の先まで辿り、DNS を引く項目（`include` `a` `mx` `ptr` `exists` `redirect`）を数えます。
+
+空の結果（レコードが無い）の回数（2回以内が推奨）と、`include:` の先に SPF が無い・2つあるといった壊れ方も出します。
+
+### 要るもの
+
+Python 3 と `dig` コマンド。Windows では WSL で動かしてください（本書 付録C）。
+
+### 使い方
+
+```
+python3 spf-count.py example.com
+```
+
+出力の例:
+
+```
+example.com
+ 1 mx
+ 2 include:_spf.example.net
+    _spf.example.net
+     3 include:_spf2.example.net
+        _spf2.example.net
+ 4 include:mail.svc.example
+    mail.svc.example
+     5 exists:%{i}._spf.svc.example
+       (macro: not followed)
+
+DNS lookups:   5 / 10
+Empty answers: 0 / 2
+Within the limit
+```
+
+数えるのは最も多くなる場合の回数です。受信側は一致した項目で評価を止めますが、どの送信元から来ても上限に収まっている必要があります。マクロ（`%{i}` など）を含む項目は1回と数え、その先は辿りません。
+
+読み方は本書の付録E で説明しています。
+
+### 確かめた環境
+
+- Ubuntu 24.04（Python 3.12.3）
+
 ## ライセンス
 
 MIT（[LICENSE](LICENSE)）

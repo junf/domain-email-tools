@@ -49,6 +49,47 @@ The topmost `Authentication-Results:` is the one written by the last server that
 - Windows 11, WSL with Ubuntu 26.04 (Python 3.14.4)
 - macOS 26.7.1 (Python 3.9.6 from Command Line Tools)
 
+## spf-count.py — count the DNS lookups of an SPF record
+
+SPF allows at most 10 DNS lookups (RFC 7208 4.6.4). `include:` counts the lookups inside the included record too, so three `include:` terms can already go over the limit. This script follows `include:` and `redirect=` and counts every term that needs a lookup (`include`, `a`, `mx`, `ptr`, `exists`, `redirect`).
+
+It also counts empty answers (no record found), which should stay at 2 or fewer, and reports an `include:` whose target has no SPF record or more than one.
+
+### Requirements
+
+Python 3 and the `dig` command. On Windows, run it in WSL.
+
+### Usage
+
+```
+python3 spf-count.py example.com
+```
+
+Example output:
+
+```
+example.com
+ 1 mx
+ 2 include:_spf.example.net
+    _spf.example.net
+     3 include:_spf2.example.net
+        _spf2.example.net
+ 4 include:mail.svc.example
+    mail.svc.example
+     5 exists:%{i}._spf.svc.example
+       (macro: not followed)
+
+DNS lookups:   5 / 10
+Empty answers: 0 / 2
+Within the limit
+```
+
+The count is the worst case: a receiver stops as soon as a term matches, but the record must stay within the limit for every sender. Terms with a macro (`%{i}` etc.) are counted once and not followed.
+
+### Tested on
+
+- Ubuntu 24.04 (Python 3.12.3)
+
 ## License
 
 MIT ([LICENSE](LICENSE))
