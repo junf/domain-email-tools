@@ -2,6 +2,9 @@
 # following include: and redirect=.
 # The limit is 10 (RFC 7208 4.6.4).
 # Usage: python3 spf-count.py example.com
+# To check a record before you set it in DNS,
+# give the record as the second argument:
+#   python3 spf-count.py example.com "v=spf1 ..."
 # Needs the dig command.
 import re
 import subprocess
@@ -36,9 +39,12 @@ def spf_of(name):
     return found, len(lines)
 
 
-def check(name, pad):
+def check(name, pad, draft=None):
     global total, void, errors
-    recs, n = spf_of(name)
+    if draft is not None:
+        recs, n = [draft], 1
+    else:
+        recs, n = spf_of(name)
     if n == 0:
         void += 1
     if len(recs) != 1:
@@ -53,7 +59,10 @@ def check(name, pad):
         else:
             print(pad + name, "(more than one SPF)")
         return
-    print(pad + name)
+    if draft is not None:
+        print(name, "(record not in DNS yet)")
+    else:
+        print(pad + name)
     terms = recs[0].split()[1:]
     has_all = any(t.lstrip("+-~?").lower() == "all"
                   for t in terms)
@@ -84,7 +93,12 @@ def check(name, pad):
                 print(pad + "   (no record)")
 
 
-check(sys.argv[1], "")
+draft = None
+if len(sys.argv) > 2:
+    draft = sys.argv[2]
+    if not draft.lower().startswith("v=spf1"):
+        sys.exit("The record must start with v=spf1")
+check(sys.argv[1], "", draft)
 print()
 print("DNS lookups:  ", total, "/ 10")
 print("Empty answers:", void, "/ 2")

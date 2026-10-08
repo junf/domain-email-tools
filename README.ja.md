@@ -84,6 +84,12 @@ Empty answers: 0 / 2
 Within the limit
 ```
 
+DNS に設定する前の値を数えたいときは、2つ目の引数に、設定する予定の値を渡します。出力の1行目に `(record not in DNS yet)` と出ます。`include:` の先は、DNS を引いて辿ります。
+
+```
+python3 spf-count.py example.com "v=spf1 include:_spf.example.net mx ~all"
+```
+
 数えるのは最も多くなる場合の回数です。受信側は一致した項目で評価を止めますが、どの送信元から来ても上限に収まっている必要があります。マクロ（`%{i}` など）を含む項目は1回と数え、その先は辿りません。
 
 読み方は本書の付録E で説明しています。

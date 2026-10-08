@@ -84,6 +84,12 @@ Empty answers: 0 / 2
 Within the limit
 ```
 
+To check a record before you set it in DNS, give the record as the second argument. The first line then says `(record not in DNS yet)`, and the `include:` targets are still looked up in DNS.
+
+```
+python3 spf-count.py example.com "v=spf1 include:_spf.example.net mx ~all"
+```
+
 The count is the worst case: a receiver stops as soon as a term matches, but the record must stay within the limit for every sender. Terms with a macro (`%{i}` etc.) are counted once and not followed.
 
 ### Tested on
