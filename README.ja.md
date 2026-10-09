@@ -98,6 +98,46 @@ python3 spf-count.py example.com "v=spf1 include:_spf.example.net mx ~all"
 
 - Ubuntu 24.04（Python 3.12.3）
 
+## dkim-check.py — DKIM の署名を検証する（DNS に入れる前でも）
+
+保存したメール（`.eml`）の DKIM の署名を検証します。公開鍵を引数で渡せるので、**DNS に設定する前に**鍵が正しいかを確かめられます。鍵を渡さなければ、`dig` で DNS から引いて検証します。
+
+署名ごとに、次のことを出します。
+
+- 本文のハッシュ（`bh=`）と署名（`b=`）の結果を分けて。本文が変わったのか、鍵かヘッダが違うのかを見分けられます
+- 鍵の長さ
+- 陰性対照: PASS したら、わざと別の鍵でも検証し、失敗することを確かめます
+
+### 要るもの
+
+Python 3、dkimpy、`dig`（DNS を引くとき）。Ubuntu・Debian では `sudo apt install python3-dkim`。それ以外では、仮想環境に dkimpy を入れてください（本書 付録F）。
+
+### 使い方
+
+```
+python3 dkim-check.py message.eml "<p= の値>"
+python3 dkim-check.py message.eml
+```
+
+出力の例:
+
+```
+Signature 1
+  d=example.com  s=s1  c=relaxed/simple
+  key: the one you gave
+  key length: 2048 bit
+  body hash (bh=): OK
+  signature (b=):  OK
+  result: PASS
+  wrong key: NG  (rejected, as expected)
+```
+
+読み方は本書の第5章 5.3・5.4 で説明しています。
+
+### 確かめた環境
+
+- Ubuntu 24.04（Python 3.12.3）、dkimpy 1.1.6 と 1.1.8
+
 ## ライセンス
 
 MIT（[LICENSE](LICENSE)）

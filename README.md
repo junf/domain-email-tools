@@ -96,6 +96,46 @@ The count is the worst case: a receiver stops as soon as a term matches, but the
 
 - Ubuntu 24.04 (Python 3.12.3)
 
+## dkim-check.py — verify a DKIM signature, before or after the key is in DNS
+
+Verifies the DKIM signatures of a saved message (`.eml`). You can give the public key on the command line, so you can check the key **before** you set it in DNS. Without a key, it looks the key up in DNS with `dig`.
+
+For each signature it shows:
+
+- the body hash (`bh=`) and the signature (`b=`) separately, so you can tell whether the body changed or the key/headers differ
+- the key length
+- a negative control: after a PASS, it verifies again with a wrong key and checks that it fails
+
+### Requirements
+
+Python 3, dkimpy, and `dig` (for the DNS lookup). On Ubuntu/Debian: `sudo apt install python3-dkim`. Elsewhere, install dkimpy in a virtual environment.
+
+### Usage
+
+```
+python3 dkim-check.py message.eml "<p= value>"
+python3 dkim-check.py message.eml
+```
+
+Example output:
+
+```
+Signature 1
+  d=example.com  s=s1  c=relaxed/simple
+  key: the one you gave
+  key length: 2048 bit
+  body hash (bh=): OK
+  signature (b=):  OK
+  result: PASS
+  wrong key: NG  (rejected, as expected)
+```
+
+The last line of each signature is one of: `PASS`, `FAIL (key or signed headers differ)`, `FAIL (body changed)`, `FAIL (no key in DNS)`, `FAIL (p= is empty in DNS: revoked)`, `FAIL (signature expired (x=))`.
+
+### Tested on
+
+- Ubuntu 24.04 (Python 3.12.3) with dkimpy 1.1.6 and 1.1.8
+
 ## License
 
 MIT ([LICENSE](LICENSE))
