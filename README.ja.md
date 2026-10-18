@@ -2,7 +2,7 @@
 
 [English](README.md)
 
-Kindle 本『独自ドメインのメール、設定したのに、なぜ届かない？ — SPF・DKIM・DMARC を、測って直す』（Jun F.）の付属スクリプトです。
+Kindle 本『独自ドメインのメール、設定したのに、なぜ届かない？ — SPF・DKIM・DMARC を、確かめて直す』（Jun F.）の付属スクリプトです。
 
 ## headers.py — 原文から、判定に要る行だけを抜き出す
 
@@ -41,7 +41,7 @@ Authentication-Results (mx.google.com)
   dmarc pass  header.from=example.com
 ```
 
-読み方は本書の付録D で説明しています。
+読み方は本書の付録F で説明しています。
 
 ### 確かめた環境
 
@@ -57,7 +57,7 @@ SPF の評価で DNS を引けるのは10回までです（RFC 7208 4.6.4）。`
 
 ### 要るもの
 
-Python 3 と `dig` コマンド。Windows では WSL で動かしてください（本書 付録C）。
+Python 3 と `dig` コマンド。Windows では WSL で動かしてください（本書 付録D）。
 
 ### 使い方
 
@@ -92,7 +92,7 @@ python3 spf-count.py example.com "v=spf1 include:_spf.example.net mx ~all"
 
 数えるのは最も多くなる場合の回数です。受信側は一致した項目で評価を止めますが、どの送信元から来ても上限に収まっている必要があります。マクロ（`%{i}` など）を含む項目は1回と数え、その先は辿りません。
 
-読み方は本書の付録E で説明しています。
+読み方は本書の付録G で説明しています。
 
 ### 確かめた環境
 
@@ -110,7 +110,7 @@ python3 spf-count.py example.com "v=spf1 include:_spf.example.net mx ~all"
 
 ### 要るもの
 
-Python 3、dkimpy、`dig`（DNS を引くとき）。Ubuntu・Debian では `sudo apt install python3-dkim`。それ以外では、仮想環境に dkimpy を入れてください（本書 付録F）。
+Python 3、dkimpy、`dig`（DNS を引くとき）。Ubuntu・Debian では `sudo apt install python3-dkim`。それ以外では、仮想環境に dkimpy を入れてください（本書 付録H）。
 
 ### 使い方
 
