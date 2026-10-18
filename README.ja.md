@@ -2,7 +2,7 @@
 
 [English](README.md)
 
-Kindle 本『独自ドメインのメール、設定したのに、なぜ届かない？ — SPF・DKIM・DMARC を、確かめて直す』（Jun F.）の付属スクリプトです。
+Kindle 本『独自ドメインのメール、設定したのに、なぜ届かない？ — SPF・DKIM・DMARCを確かめて直す』（Jun F.）の付属スクリプトです。
 
 ## headers.py — 原文から、判定に要る行だけを抜き出す
 

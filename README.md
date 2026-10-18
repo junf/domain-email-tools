@@ -2,7 +2,7 @@
 
 [日本語](README.ja.md)
 
-Companion scripts for the Kindle book *独自ドメインのメール、設定したのに、なぜ届かない？ — SPF・DKIM・DMARC を、確かめて直す* (Jun F.; Japanese).
+Companion scripts for the Kindle book *独自ドメインのメール、設定したのに、なぜ届かない？ — SPF・DKIM・DMARCを確かめて直す* (Jun F.; Japanese).
 
 ## headers.py — show only the header lines that matter
 
